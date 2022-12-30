@@ -48,12 +48,12 @@
                 } catch (err) {
                     console.log(err);
                     errordiv.innerHTML += "<br>" + err.message;
-                    alert("请检查一下 jszip.js 是否加载喔");
+                    alert("请检查一下 jszip.js 是否加载哦");
                     return;
                 }
                 errordiv.innerHTML = "检查上传文件中...";
                 new_zip.loadAsync(zipfile).then(function(zip) {
-                    errordiv.innerHTML += " ---- done.";
+                    errordiv.innerHTML += " ---- 完成.";
                     var dirpath = findPath(zip);
                     if (dirpath!==false) {
                         checkDeploys(projectname, VercelToken).then(a => {
@@ -76,7 +76,7 @@
             }
 
             function findPath(zip) {
-                errordiv.innerHTML += "<br>上传文件路径好像不正确啊 ⊙▂⊙";
+                errordiv.innerHTML += "<br>二次确认中...";
                 var haveIndex = 0;
                 var dirpath = "";
                 console.log("find path: Start.");
@@ -98,14 +98,14 @@
                     return false;
                 } else {
                     console.log("寻找路径完成喽！(￣ˇ￣)");
-                    errordiv.innerHTML += "任务成功完成了哈哈";
+                    errordiv.innerHTML += "我的任务完成啦";
                     console.log("Path is \"" + dirpath + "\" .");
                     return dirpath;
                 }
             }
 
             function checkDeploys(name, VercelToken) {
-                errordiv.innerHTML += "<br>没有正确回去的ID呢 (＞﹏＜)";
+                errordiv.innerHTML += "<br>三次确认中...";
                 return new Promise(function(resolve, reject){
                     var xhr = new XMLHttpRequest();
                     var url = "https://api.vercel.com/v8/projects/" + name;
@@ -117,7 +117,7 @@
                     xhr.onload = function(e) {
                         //console.log(xhr.responseText);
                         if (xhr.status==200) {
-                            errordiv.innerHTML += " ---- done.";
+                            errordiv.innerHTML += " ---- 完成.";
                             resolve(JSON.parse(xhr.responseText).id);
                         } else if (xhr.status===404) {
                             console.log("new project.");
@@ -157,7 +157,7 @@
                                     }
                                 });
                                 if (r===0) {
-                                    errordiv.innerHTML += " ---- done.";
+                                    errordiv.innerHTML += " ---- 完成.";
                                     resolve(r);
                                 } else {
                                     errordiv.innerHTML += "<br>There is a building deployment, please deploy later.";
@@ -181,7 +181,7 @@
 
             function getFileContent(zip, dirpath) {
                 // get files content
-                errordiv.innerHTML += "<br>Reading files.";
+                errordiv.innerHTML += "<br>读取文件中，马上就好哦！";
                 return new Promise(function(resolve, reject){
                     console.log("read file: Start.");
                     var filedata = new Array();
@@ -219,7 +219,7 @@
                             clearInterval(uploadList);
                             //console.log(filedata);
                             console.log("read file: End.");
-                            errordiv.innerHTML += " ---- done.";
+                            errordiv.innerHTML += " ---- 完成.";
                             resolve(filedata);
                         }
                     }, 1000);
@@ -227,7 +227,7 @@
             }
 
             function deploy(projectname, filedata, VercelToken) {
-                errordiv.innerHTML += "<br>Deploy POST";
+                errordiv.innerHTML += "<br>提交文件中...";
                 var xhr = new XMLHttpRequest();
                 var url = "https://api.vercel.com/v13/deployments";
                 xhr.open("POST", url);
@@ -262,7 +262,7 @@
                     var res = JSON.parse(xhr.responseText);
                     //console.log(res);
                     if (xhr.status==200) {
-                        errordiv.innerHTML += " ---- done.<br>Getting deploy status";
+                        errordiv.innerHTML += " ---- 完成.<br>Getting deploy status";
                         getStatus(res.id, res.alias[0], VercelToken);
                     } else {
                         errordiv.innerHTML += "<br>" + xhr.status + "<br>" + res.error.code + "<br>" + res.error.message;
